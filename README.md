@@ -6,7 +6,7 @@ A persistent Express/SQLite API for managing a coffee shop's menus, menu items, 
 
 The project brief (from the course assignment): build all of the routing and database logic for an internal tool for a coffee shop called Expresso. The tool allows users to create, view, update and delete menus, menu items, employees and employees' timesheets. A React front-end and a Mocha test suite were provided by the course.
 
-The full assignment specification (database table properties and expected route behavior) is preserved in the commit history of this README.
+The full assignment specification (database table properties and expected route behavior) is preserved in [ASSIGNMENT.md](ASSIGNMENT.md).
 
 ## Built With
 
