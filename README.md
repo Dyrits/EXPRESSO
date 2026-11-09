@@ -19,13 +19,24 @@ The full assignment specification (database table properties and expected route 
 
 ### Prerequisites
 
-- Node.js and npm
+- Node.js 26 LTS
+- pnpm 7.33.7, matching the repository's existing lockfile format
+- Python 3, make and a C/C++ compiler if SQLite needs to build from source
 
 ### Installation
 
 ```bash
-npm install
+pnpm install --frozen-lockfile
 ```
+
+SQLite 6 prebuilt binaries are platform-dependent. On older Linux systems, a downloaded binary may fail with a glibc version error. Build the native module from source instead:
+
+```bash
+pnpm install --frozen-lockfile --ignore-scripts
+npm_config_build_from_source=true pnpm rebuild sqlite3
+```
+
+The source build needs Node headers as well as the compiler prerequisites above. If headers are already installed locally, set `npm_config_nodedir` to their directory. Source compilation, not the incompatible prebuilt binary, was verified on the Linux test host.
 
 ### Running the server
 
@@ -38,10 +49,26 @@ The server listens on `process.env.PORT`, or on port 4000 by default (where the 
 ### Running the tests
 
 ```bash
-npm test
+pnpm test
 ```
 
-A `seed.js` file is included to populate the database with sample data.
+The test runner copies the two fixture databases and API into a temporary directory, runs all 89 original API tests there, and removes the directory. It also checks React server rendering and the inherited fetch implementation. Tests do not modify the tracked databases.
+
+### Building the front-end
+
+```bash
+pnpm build
+```
+
+Webpack 5 and Babel 7 rebuild the tracked `public/js/bundle.js` and source map. React 15 and Router 4 are retained. The course frontend still expects its API at `http://localhost:4000/api`; the API server does not serve `index.html`. Serve the repository with a separate local static server to use the frontend.
+
+A `seed.js` file is included to populate the database with sample data. It writes to the database and is not run by the tests.
+
+### Dependency verification
+
+The November 2026 refresh was verified on Node 26.13.0 with a fresh frozen pnpm install, source-built SQLite, all 89 API tests, the dependency smoke tests and a production frontend build. Both original and rebuilt browser bundles passed Chromium landing, hash-route navigation and employee create/read checks against the updated API using disposable databases. This is frontend parity, not a claim that the original SQLite 4 backend runs on Node 26: its native binding could not load there.
+
+`pnpm audit` reported zero findings for this lockfile at verification time, down from 24 unique advisories before the refresh. This is a dependency scan, not a full security review. React 15 and Router 4 remain legacy software. The API has no new authentication or deployment configuration.
 
 ## License
 

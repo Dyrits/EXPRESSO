@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, HashRouter as Router, Route, browserHistory } from 'react-router-dom';
+import { Link, HashRouter as Router, Route } from 'react-router-dom';
 
 import Menu from './Menu';
 import Landing from './Landing';
@@ -8,7 +8,7 @@ import Employee from './Employee';
 class App extends Component {
   render() {
     return (
-      <Router history={browserHistory}>
+      <Router>
         <div className="App">
           <header>
             <Link to="/" className="logo">
